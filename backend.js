@@ -77,6 +77,23 @@ function addUser(user){
     users['users_list'].push(user);
 }
 
+app.delete('/users/:id', (req, res) => {
+    const id = req.params.id; //req.params['id'] also works
+    let result = findUsersById(id);
+    if (result === undefined || result.length == 0)
+        res.status(404).send('Resource not found.');
+    else {
+        result = {users_list: result};
+        users['users_list'].splice(users['users_list'].indexOf(result),1);
+        res.status(200).send('Item successfully deleted.');
+    }
+});
+
+function removeUser(user){
+    users['users_list'].find( (user) => user['id'] === id); 
+    return users['users_list'].delete(user);
+}
+
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });
