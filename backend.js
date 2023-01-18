@@ -89,9 +89,21 @@ app.delete('/users/:id', (req, res) => {
     }
 });
 
-function removeUser(user){
-    users['users_list'].find( (user) => user['id'] === id); 
-    return users['users_list'].delete(user);
+app.get('/users', (req, res) => {
+    const name = req.query.name;
+    const job = req.query.job;
+    if (name != undefined && job != undefined){
+        let result = findUserByNameAndJob(name, job);
+        result = {users_list: result};
+        res.send(result);
+    }
+    else{
+        res.send(users);
+    }
+});
+
+const findUserByNameAndJob = (name, job) => {
+    return users['users_list'].filter( (user) => (user['name'] === name &&  user['job'] === job));
 }
 
 app.get('/', (req, res) => {
