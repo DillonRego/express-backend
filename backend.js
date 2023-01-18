@@ -51,6 +51,22 @@ const findUserByName = (name) => {
     return users['users_list'].filter( (user) => user['name'] === name);
 }
 
+app.get('/users/:id', (req, res) => {
+    const id = req.params.id; //req.params['id'] also works
+    let result = findUsersById(id);
+    if (result === undefined || result.length == 0)
+        res.status(404).send('Resource not found.');
+    else {
+        result = {users_list: result};
+        res.send(result);
+    }
+});
+
+function findUsersById(id) {
+    return users['users_list'].find( (user) => user['id'] === id); 
+    // return users['users_list].filter( (user) => user['id'] === id)
+}
+
 app.get('/', (req, res) => {
     res.send('Hello World!');
 });
